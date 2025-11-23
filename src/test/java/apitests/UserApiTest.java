@@ -24,12 +24,12 @@ public class UserApiTest extends BaseApiTest{
                 .contentType(ContentType.JSON)
                 .body(body)
                 .when()
-                .post("/api/users")
+                .post("/users")
                 .then()
+                .statusCode(201)
                 .log().all()
                 .body("name", equalTo("morpheus"))
-                .body("job", equalTo("leader"))
-                .statusCode(201);
+                .body("job", equalTo("leader"));
     }
 
     @Test
@@ -41,16 +41,16 @@ public class UserApiTest extends BaseApiTest{
                 .contentType(ContentType.JSON)
                 .body(bodyUser)
                 .when()
-                .post("/api/register")
+                .post("/register")
                 .then()
+                .statusCode(200)
                 .log().all()
                 .body("id", equalTo(4))
-                .body("token", notNullValue())
-                .statusCode(200);
+                .body("token", notNullValue());
     }
 
     @Test
-    @Description("Отправляет POST запрос на регистрацию пользователя")
+    @Description("Отправляет POST запрос на регистрацию")
     @DisplayName("Неуспешная регистрация  пользователя")
     void registerUserUnsuccessfulTest() {
         given()
@@ -58,10 +58,10 @@ public class UserApiTest extends BaseApiTest{
                 .contentType(ContentType.JSON)
                 .body(bodyUserFailure)
                 .when()
-                .post("/api/register")
+                .post("/register")
                 .then()
+                .statusCode(400)
                 .log().all()
-                .body("error", equalTo("Missing password"))
-                .statusCode(400);
+                .body("error", equalTo("Missing password"));
     }
 }

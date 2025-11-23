@@ -15,12 +15,13 @@ public class StatusApiTest extends BaseApiTest {
     @DisplayName("Получить список пользователей")
     void getListUsersTest(){
         given()
+                .queryParam("page", 2)
                 .when()
-                .get("/api/users?page=2")
+                .get("/users")
                 .then()
+                .statusCode(200)
                 .body("page", equalTo(2))
-                .body("data.id", hasItem(7))
-                .statusCode(200);
+                .body("data.id", hasItem(7));
 
     }
 
@@ -30,7 +31,7 @@ public class StatusApiTest extends BaseApiTest {
     void checkUserNotFoundTest(){
         given()
                 .when()
-                .get("/api/users/23")
+                .get("/users/23")
                 .then()
                 .statusCode(404);
 
