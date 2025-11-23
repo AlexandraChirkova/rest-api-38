@@ -1,6 +1,8 @@
 package apitests;
 
+import io.qameta.allure.Description;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -14,6 +16,8 @@ public class UserApiTest extends BaseApiTest{
     String bodyUserFailure = "{\"email\": \"sydney@fife\"}";
 
     @Test
+    @Description("Отправляет POST запрос и создает юзера")
+    @DisplayName("Создать пользователя")
     void createUserTest() {
         given()
                 .log().all()
@@ -23,12 +27,14 @@ public class UserApiTest extends BaseApiTest{
                 .post("/api/users")
                 .then()
                 .log().all()
-                .statusCode(201)
                 .body("name", equalTo("morpheus"))
-                .body("job", equalTo("leader"));
+                .body("job", equalTo("leader"))
+                .statusCode(201);
     }
 
     @Test
+    @Description("Отправляет POST запрос и зарегистрировать пользователя")
+    @DisplayName("Регистрация  пользователя")
     void registerUserSuccessTest() {
         given()
                 .log().all()
@@ -38,12 +44,14 @@ public class UserApiTest extends BaseApiTest{
                 .post("/api/register")
                 .then()
                 .log().all()
-                .statusCode(200)
                 .body("id", equalTo(4))
-                .body("token", notNullValue());
+                .body("token", notNullValue())
+                .statusCode(200);
     }
 
     @Test
+    @Description("Отправляет POST запрос на регистрацию пользователя")
+    @DisplayName("Неуспешная регистрация  пользователя")
     void registerUserUnsuccessfulTest() {
         given()
                 .log().all()
@@ -53,7 +61,7 @@ public class UserApiTest extends BaseApiTest{
                 .post("/api/register")
                 .then()
                 .log().all()
-                .statusCode(400)
-                .body("error", equalTo("Missing password"));
+                .body("error", equalTo("Missing password"))
+                .statusCode(400);
     }
 }
