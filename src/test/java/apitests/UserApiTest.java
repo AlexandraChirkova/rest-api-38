@@ -26,8 +26,8 @@ public class UserApiTest extends BaseApiTest{
                 .when()
                 .post("/users")
                 .then()
-                .statusCode(201)
                 .log().all()
+                .statusCode(201)
                 .body("name", equalTo("morpheus"))
                 .body("job", equalTo("leader"));
     }
@@ -43,8 +43,8 @@ public class UserApiTest extends BaseApiTest{
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(200)
                 .log().all()
+                .statusCode(200)
                 .body("id", equalTo(4))
                 .body("token", notNullValue());
     }
@@ -60,8 +60,8 @@ public class UserApiTest extends BaseApiTest{
                 .when()
                 .post("/register")
                 .then()
-                .statusCode(400)
                 .log().all()
+                .statusCode(400)
                 .body("error", equalTo("Missing password"));
     }
 }
