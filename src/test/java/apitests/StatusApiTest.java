@@ -1,12 +1,14 @@
 package apitests;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
+import models.lombok.UsersListResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static specs.UserSpec.*;
 
 public class StatusApiTest extends BaseApiTest {
 
@@ -14,14 +16,19 @@ public class StatusApiTest extends BaseApiTest {
     @Description("Отправляет GET запрос и выводит список пользователей")
     @DisplayName("Получить список пользователей")
     void getListUsersTest(){
-        given()
+        UsersListResponse response = Allure.step("Выводим список пользователей", () -> given()
                 .queryParam("page", 2)
+
                 .when()
                 .get("/users")
+
                 .then()
-                .statusCode(200)
-                .body("page", equalTo(2))
-                .body("data.id", hasItem(7));
+                .spec(userListResponseSpec)
+                .extract().as(UsersListResponse.class));
+
+        Allure.step("Проверяем ответ", () -> {
+            assertEquals(2, response.getPage(), "Номер страницы неверный");
+        });
 
     }
 
@@ -29,12 +36,13 @@ public class StatusApiTest extends BaseApiTest {
     @Description("Отправляет GET запрос и проверяет что такого пользователя нет")
     @DisplayName("Проверить что пользователь не найден")
     void checkUserNotFoundTest(){
-        given()
+        Allure.step("Запрашиваем не существующего пользователя", () ->  given(userRequestSpec)
+
                 .when()
                 .get("/users/23")
-                .then()
-                .statusCode(404);
 
+                .then()
+                .spec(userNotFoundSpec));
     }
 
 }
