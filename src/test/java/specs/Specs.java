@@ -20,6 +20,15 @@ public class Specs {
             .contentType(ContentType.JSON)
             .header("x-api-key", "reqres_35909ad663cb45888b1783405c4e8956");
 
+    public static RequestSpecification requestSpecPublic = with()
+            .filter(withCustomTemplates())
+            .log().uri()
+            .log().body()
+            .log().headers()
+            .accept(ContentType.JSON)
+            .header("x-api-key", "reqres_35909ad663cb45888b1783405c4e8956")
+            .header("User-Agent", "Mozilla/5.0");
+
     public static ResponseSpecification responseSpec(int statusCode) {
         return new ResponseSpecBuilder()
                 .expectStatusCode(statusCode)

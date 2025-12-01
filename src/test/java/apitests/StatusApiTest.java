@@ -17,7 +17,7 @@ public class StatusApiTest extends BaseApiTest {
     @Description("Отправляет GET запрос и выводит список пользователей")
     @DisplayName("Получить список пользователей")
     void getListUsersTest(){
-        UsersListResponse response = Allure.step("Выводим список пользователей", () -> given()
+        UsersListResponse response = Allure.step("Выводим список пользователей", () -> given(requestSpecPublic)
                 .queryParam("page", 2)
 
                 .when()
@@ -37,7 +37,7 @@ public class StatusApiTest extends BaseApiTest {
     @Description("Отправляет GET запрос и проверяет что такого пользователя нет")
     @DisplayName("Проверить что пользователь не найден")
     void checkUserNotFoundTest(){
-        Allure.step("Запрашиваем не существующего пользователя", () ->  given()
+        Allure.step("Запрашиваем не существующего пользователя", () ->  given(requestSpecPublic)
 
                 .when()
                 .get("/users/23")
