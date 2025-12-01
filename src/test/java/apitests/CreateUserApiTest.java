@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.UserSpec.userRequestSpec;
-import static specs.UserSpec.userResponseSpec;
+import static specs.Specs.*;
+
 
 public class CreateUserApiTest extends BaseApiTest{
 
@@ -25,14 +25,14 @@ public class CreateUserApiTest extends BaseApiTest{
         body.setName("morpheus");
         body.setJob("leader");
 
-        UserResponseModel response = Allure.step("Создаем пользователя", () -> given(userRequestSpec)
+        UserResponseModel response = Allure.step("Создаем пользователя", () -> given(requestSpec)
                 .body(body)
 
                 .when()
                 .post("/users")
 
                 .then()
-                .spec(userResponseSpec)
+                .spec(responseSpec(201))
                 .extract().as(UserResponseModel.class));
 
         Allure.step("Проверяем Имя пользователя и должность", () -> {

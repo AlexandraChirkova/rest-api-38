@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.RegisterSpec.*;
+import static specs.Specs.*;
 
 public class RegisterUserApiTest extends BaseApiTest{
 
@@ -24,14 +24,14 @@ public class RegisterUserApiTest extends BaseApiTest{
         bodyUser.setPassword("pistol");
 
         RegisterResponseModel registerResponseModel =  Allure.step("Выполняем регистрацию пользователя", () ->
-        given(registerRequestSpec)
+        given(requestSpec)
                 .body(bodyUser)
 
                 .when()
                 .post("/register")
 
                 .then()
-                .spec(registerResponseSpec)
+                .spec(responseSpec(200))
                 .extract().as(RegisterResponseModel.class));
 
         Allure.step("Проверяем ID и token ответа", () -> {
@@ -48,14 +48,14 @@ public class RegisterUserApiTest extends BaseApiTest{
         bodyUser.setEmail("sydney@fife");
 
         RegisterResponseModel registerResponseModel =  Allure.step("Выполняем неуспешную регистрацию пользователя", () ->
-        given(registerRequestSpec)
+        given(requestSpec)
                 .body(bodyUser)
 
                 .when()
                 .post("/register")
 
                 .then()
-                .spec(registerFailedResponseSpec)
+                .spec(responseSpec(400))
                 .extract().as(RegisterResponseModel.class));
 
         Allure.step("Проверяем содержимое ответа при неуспешной регистрации", () -> {

@@ -1,6 +1,5 @@
 package specs;
 
-import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
@@ -11,25 +10,21 @@ import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
 
-public class RegisterSpec {
+public class Specs {
 
-    public static RequestSpecification registerRequestSpec = with()
+    public static RequestSpecification requestSpec = with()
             .filter(withCustomTemplates())
             .log().uri()
             .log().body()
             .log().headers()
             .contentType(ContentType.JSON)
-            .header("x-api-key", "reqres-free-v1");
+            .header("x-api-key", "reqres_35909ad663cb45888b1783405c4e8956");
 
-    public static ResponseSpecification registerResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(200)
-            .log(STATUS)
-            .log(BODY)
-            .build();
-
-    public static ResponseSpecification registerFailedResponseSpec = new ResponseSpecBuilder()
-            .expectStatusCode(400)
-            .log(STATUS)
-            .log(BODY)
-            .build();
+    public static ResponseSpecification responseSpec(int statusCode) {
+        return new ResponseSpecBuilder()
+                .expectStatusCode(statusCode)
+                .log(STATUS)
+                .log(BODY)
+                .build();
+    }
 }
