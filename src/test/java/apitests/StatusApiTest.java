@@ -8,7 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static specs.UserSpec.*;
+import static specs.Specs.*;
+
 
 public class StatusApiTest extends BaseApiTest {
 
@@ -16,14 +17,14 @@ public class StatusApiTest extends BaseApiTest {
     @Description("Отправляет GET запрос и выводит список пользователей")
     @DisplayName("Получить список пользователей")
     void getListUsersTest(){
-        UsersListResponse response = Allure.step("Выводим список пользователей", () -> given()
+        UsersListResponse response = Allure.step("Выводим список пользователей", () -> given(requestSpecPublic)
                 .queryParam("page", 2)
 
                 .when()
                 .get("/users")
 
                 .then()
-                .spec(userListResponseSpec)
+                .spec(responseSpec(200))
                 .extract().as(UsersListResponse.class));
 
         Allure.step("Проверяем ответ", () -> {
@@ -36,13 +37,13 @@ public class StatusApiTest extends BaseApiTest {
     @Description("Отправляет GET запрос и проверяет что такого пользователя нет")
     @DisplayName("Проверить что пользователь не найден")
     void checkUserNotFoundTest(){
-        Allure.step("Запрашиваем не существующего пользователя", () ->  given(userRequestSpec)
+        Allure.step("Запрашиваем не существующего пользователя", () ->  given(requestSpecPublic)
 
                 .when()
                 .get("/users/23")
 
                 .then()
-                .spec(userNotFoundSpec));
+                .spec(responseSpec(404)));
     }
 
 }
